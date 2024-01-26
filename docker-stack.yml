@@ -1,0 +1,32 @@
+version: '3.7'
+
+services:
+  app:
+    image: docker_project-app
+    deploy:
+      replicas: 2
+    ports:
+      - "80:3000"
+    depends_on:
+      - db
+    networks:
+      - mynetwork
+
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: overlay
+
+volumes:
+  db_data:
